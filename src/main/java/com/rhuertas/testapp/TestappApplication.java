@@ -15,23 +15,23 @@ public class TestappApplication implements CommandLineRunner{
 	}
 	@Override
 	public void run(String... args) throws Exception {
-		repository.deleteAll();
-		repository.save(new Customer("Alice", "Wonderland"));
-		repository.save(new Customer("Bob", "Builder"));
+		//repository.deleteAll();
+		//repository.save(new Customer("Alice", "Wonderland"));
+		//repository.save(new Customer("Bob", "Builder"));
 
-		// fetch all customers
-		System.out.println("Customers found with findAll():");
-		System.out.println("-------------------------------");
-		for (Customer customer : repository.findAll()) {
-			System.out.println(customer);
-		}
-		System.out.println();
+		//// fetch all customers
+		//System.out.println("Customers found with findAll():");
+		//System.out.println("-------------------------------");
+		//for (Customer customer : repository.findAll()) {
+		//	System.out.println(customer);
+		//}
+		//System.out.println();
 
-		//fetch an individual customer
-		System.out.println("Customers found with findByLastName('Builder'):");
-		for(Customer customer : repository.findByLastName("Builder")) {
-			System.out.println(customer);
-		}
+		////fetch an individual customer
+		//System.out.println("Customers found with findByLastName('Builder'):");
+		//for(Customer customer : repository.findByLastName("Builder")) {
+		//	System.out.println(customer);
+		//}
 
 
 	}
