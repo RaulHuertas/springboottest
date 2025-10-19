@@ -3,3 +3,6 @@ spring:
     name: testapp
 app:
     author: rhuertas
+server:
+    port: 8083
+
