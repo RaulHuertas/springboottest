@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.proto.testapp.*;
 @RestController
 @RequestMapping("/api")
 public class TestController {
@@ -38,5 +41,26 @@ public class TestController {
         return jsonArray;
 
     }
-    
+
+    @PostMapping("/addCustomer")
+    public String addCustomer( String firstName, String lastName, String email) {
+        customerRepository.save(
+            new Customer(firstName, lastName,email)
+        );
+        return "Customer added";
+    }
+    @PostMapping("/makeOrder")
+    public String makeOrder(@RequestBody com.proto.testapp.OrderRequest orderRequest) {
+        // Here you would typically process the orderRequest and create an Order
+        // For simplicity, we will just log the order details
+
+        logger.info("Received order request: " + orderRequest.toString());
+        logger.info("customerId: " + orderRequest.getCustomerEmail()); 
+        // Simulate order processing
+        return "Order received for customer: " + orderRequest.getCustomerEmail();
+    }
+
+
+
+
 }
