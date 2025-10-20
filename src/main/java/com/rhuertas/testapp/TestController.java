@@ -2,6 +2,7 @@ package com.rhuertas.testapp;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,13 @@ public class TestController {
         );
         return "Customer added";
     }
+
+    @PostMapping("/testJson")
+    public String testJson(@RequestBody ObjectNode root) {
+        logger.info("Received JSON payload: " + root.get("customerEmail"));
+        return "JSON received";
+    }
+
     @PostMapping("/makeOrder")
     public String makeOrder(@RequestBody com.proto.testapp.OrderRequest orderRequest) {
         // Here you would typically process the orderRequest and create an Order
