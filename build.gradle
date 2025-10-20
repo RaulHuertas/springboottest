@@ -21,7 +21,12 @@ configurations {
 }
 
 repositories {
-	mavenCentral()
+	maven {
+        mavenCentral()
+        url = 'https://repo.akka.io/'+"${AKKA_TOKENS}"+'/secure'
+        mavenLocal()
+    }
+
 }
 
 dependencies {
@@ -38,6 +43,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// Akka Actor Core
+	//implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.10.9' // For Akka Typed
+	// Or for classic actors:
+	implementation 'com.typesafe.akka:akka-actor_2.13:2.10.9'
+
+	// Optional: Akka Stream
+	implementation 'com.typesafe.akka:akka-stream_2.13:2.10.9'
 }
 
 tasks.named('test') {
