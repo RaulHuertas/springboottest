@@ -6,37 +6,26 @@ import org.springframework.data.annotation.Id;
 
 
 public class Order {
-    public enum Status {
-        RECEIVED("RECEIVED"),
-        PROCESSING("PROCESSING"),
-        COMPLETED("COMPLETED"),;
-
-        public final String label;
-
-        private Status(String label) {
-            this.label = label;
-        }
-    }
+    static final int PROCESSING = 1;
+    static final int COMPLETED = 2; 
+    static final int CANCELLED = 3;
 
     @Id
     private String id;
     private String customerId;
-    private int customerPhoneNumber;
-    private Status status;
-    private List<String> items;
-    private OffsetDateTime ts;
+    private int  status;
+    private List<Item> items;
+    private OffsetDateTime timestamp;
 
     public Order() {
     }
 
     public Order(
         String customerId, 
-        int customerPhoneNumber,
-        Status status, 
-        List<String> items
+        int status, 
+        List<Item> items
     ) {
         this.customerId = customerId;
-        this.customerPhoneNumber = customerPhoneNumber;
         this.status = status;
         this.items = items;
     }    
@@ -52,17 +41,23 @@ public class Order {
         return customerId;
     }
 
-    public Status getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public List<String> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
+    public OffsetDateTime getTimestamp() {
+        return timestamp;
+    }
+    public void setTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
 }

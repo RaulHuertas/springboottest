@@ -1,9 +1,9 @@
-package testapp;
+package testapp;    
 option java_package = "com.proto.testapp";
 option java_multiple_files = true;
 
 import "testapp/order.proto";
 
 service TestAppService {
-    rpc PlaceOrder (Order) returns (OrderResponse);
+    rpc placeOrder (Order) returns (OrderResponse);
 }

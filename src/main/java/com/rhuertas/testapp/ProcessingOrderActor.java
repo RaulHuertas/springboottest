@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-public class ProcessOrderActor extends AbstractActor {
+public class ProcessingOrderActor extends AbstractActor {
 
     @Autowired
     CustomerRepository customerRepository;
@@ -33,21 +33,7 @@ public class ProcessOrderActor extends AbstractActor {
                         msg.getItemsList().stream().map(item -> new Item(item.getName(), item.getPrice())).toList()
                     )
                 );
-                OrderResponse response = stub.placeOrder(
-                    com.proto.testapp.Order.newBuilder()
-                    .setId(withId.getId())
-                    .setCustomerId(withId.getCustomerId())
-                    .setStatus(withId.getStatus())
-                    .addAllItems(
-                        withId.getItems().stream().map(
-                            item -> com.proto.testapp.Item.newBuilder()
-                                .setName(item.getName())
-                                .setPrice(item.getPrice())
-                                .build()
-                        ).toList()
-                    )
-                    .build()
-                );
+                
 
             })
             .build();
@@ -66,3 +52,6 @@ public class ProcessOrderActor extends AbstractActor {
     }
 
 }
+
+
+

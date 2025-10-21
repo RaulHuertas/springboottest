@@ -2,7 +2,6 @@ package com.rhuertas.testapp;
 import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-
 public interface CustomerRepository extends
 MongoRepository<Customer, String> {
 

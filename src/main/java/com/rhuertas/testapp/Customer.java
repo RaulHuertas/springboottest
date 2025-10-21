@@ -1,4 +1,7 @@
 package com.rhuertas.testapp;
+import java.io.StringBufferInputStream;
+import java.util.Stack;
+
 import org.springframework.data.annotation.Id;
 
 public class Customer {
@@ -50,6 +53,14 @@ public class Customer {
                 "Customer[id=%s, firstName='%s', lastName='%s']",
                 id, firstName, lastName
         ); 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

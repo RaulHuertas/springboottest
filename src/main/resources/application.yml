@@ -1,6 +1,8 @@
 
 app:
     author: rhuertas
+    grpcPort: 50053
+    grpcAddress: "localhost"
 
 spring:
   application:

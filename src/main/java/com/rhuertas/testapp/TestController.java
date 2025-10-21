@@ -3,6 +3,7 @@ package com.rhuertas.testapp;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.errorprone.annotations.Keep;
 import com.google.gson.Gson;
 
 import org.slf4j.LoggerFactory;
@@ -17,29 +18,38 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.proto.testapp.*;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
+import akka.actor.ActorSystem;
+import akka.actor.Actor;
+import akka.actor.ActorRef;
+
 @RestController
 @RequestMapping("/api")
 public class TestController {
+
     @Autowired
     CustomerRepository customerRepository;
-
+    
     @Value("${app.author}")
     private String author;
 
+    private ActorSystem actorSystem;
+    private ActorRef processOrderActor;
 
     Logger logger = LogManager.getLogger(TestController.class);
 
     TestController() {
         logger.info("TestController(by rax) initialized");
-    }
 
-    @GetMapping("/test")
-    public String testEndpoint() {
-        List<Customer> customers = customerRepository.findAll();
-        Gson gson = new Gson();
-        String jsonArray = gson.toJson(customers);
-        //return customers.toString();
-        return jsonArray;
+        actorSystem = ActorSystem.create("MyActorSystem");
+        processOrderActor = actorSystem.actorOf(
+            akka.actor.Props.create(ProcessOrderActor.class), 
+            "ProcessOrderActor"
+        );
+
 
     }
 
@@ -59,14 +69,19 @@ public class TestController {
 
     @PostMapping("/makeOrder")
     public String makeOrder(@RequestBody com.proto.testapp.OrderRequest orderRequest) {
-        // Here you would typically process the orderRequest and create an Order
-        // For simplicity, we will just log the order details
 
         logger.info("Received order request: " + orderRequest.toString());
-        logger.info("customerId: " + orderRequest.getCustomerEmail()); 
-        // Simulate order processing
-        return "Order received for customer: " + orderRequest.getCustomerEmail();
+        logger.info("customerEmail: " + orderRequest.getCustomerEmail()); 
+        logger.info("items: "+orderRequest.getItemsList().toString());
+        processOrderActor.tell(orderRequest, Actor.noSender());
+
+
+
+        return "Order being processed: " + orderRequest.getCustomerEmail();
+ 
+
     }
+
 
 
 
