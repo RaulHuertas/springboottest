@@ -33,7 +33,22 @@ public class ProcessingOrderActor extends AbstractActor {
                         msg.getItemsList().stream().map(item -> new Item(item.getName(), item.getPrice())).toList()
                     )
                 );
-                
+                System.out.println("processing first part finished");                
+                OrderResponse response = stub.placeOrder(
+                    com.proto.testapp.Order.newBuilder()
+                    .setId(withId.getId())
+                    .setCustomerId(withId.getCustomerId())
+                    .setStatus(withId.getStatus())
+                    .addAllItems(
+                        withId.getItems().stream().map(
+                            item -> com.proto.testapp.Item.newBuilder()
+                                .setName(item.getName())
+                                .setPrice(item.getPrice())
+                                .build()
+                        ).toList()
+                    )
+                    .build()
+                );
 
             })
             .build();

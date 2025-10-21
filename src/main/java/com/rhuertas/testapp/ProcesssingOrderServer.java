@@ -12,7 +12,7 @@ public class ProcesssingOrderServer {
     InterruptedException {
       int port = 50052;
       Server server = ServerBuilder.forPort(port)
-        .addService(new CalculatorServiceImpl()).build();
+        .addService(new ProcessingOrderImpl()).build();
       server.start();
       System.out.println("server started. Listening on port : " +
         port);
