@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 
 
 public class Order {
+    static final int NEW = 0;
     static final int PROCESSING = 1;
     static final int COMPLETED = 2; 
     static final int CANCELLED = 3;

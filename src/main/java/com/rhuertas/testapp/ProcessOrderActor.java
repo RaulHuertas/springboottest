@@ -12,6 +12,7 @@ public class ProcessOrderActor extends AbstractActor {
     CustomerRepository customerRepository;
     @Autowired
     OrderRepository orderRepository;
+
     ManagedChannel channel; 
     TestAppServiceGrpc.TestAppServiceBlockingStub stub;
     

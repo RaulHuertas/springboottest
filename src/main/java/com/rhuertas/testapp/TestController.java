@@ -32,25 +32,27 @@ public class TestController {
 
     @Autowired
     CustomerRepository customerRepository;
-    
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    ManagedChannel channel; 
+    TestAppServiceGrpc.TestAppServiceFutureStub stub;   
+
+    @Value("${app.grpcPort}")
+    private int grpcPort;
+    @Value("${app.grpcAddress}")
+    private String grpcAddress;
+
     @Value("${app.author}")
     private String author;
-
-    private ActorSystem actorSystem;
-    private ActorRef processOrderActor;
 
     Logger logger = LogManager.getLogger(TestController.class);
 
     TestController() {
         logger.info("TestController(by rax) initialized");
-
-        actorSystem = ActorSystem.create("MyActorSystem");
-        processOrderActor = actorSystem.actorOf(
-            akka.actor.Props.create(ProcessOrderActor.class), 
-            "ProcessOrderActor"
-        );
-
-
+        channel = ManagedChannelBuilder.forAddress(grpcAddress, grpcPort).usePlaintext().build();
+        stub = TestAppServiceGrpc.newFutureStub(channel);
     }
 
     @PostMapping("/addCustomer")
@@ -73,8 +75,13 @@ public class TestController {
         logger.info("Received order request: " + orderRequest.toString());
         logger.info("customerEmail: " + orderRequest.getCustomerEmail()); 
         logger.info("items: "+orderRequest.getItemsList().toString());
-        processOrderActor.tell(orderRequest, Actor.noSender());
-
+        stub.placeOrder(
+            com.proto.testapp.Order.newBuilder()
+            .setCustomerId(orderRequest.getCustomerEmail())
+            .setStatus(Order.NEW)
+            .addAllItems(orderRequest.getItemsList())
+            .build()
+        );
 
 
         return "Order being processed: " + orderRequest.getCustomerEmail();
